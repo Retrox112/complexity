@@ -22,21 +22,20 @@ def transpile(code: str) -> str:
         (r'\bdeadass\b', 'True'),
         (r'\bcap\b', 'False'),
 
-        # Print (handy function call formatting)
+        # Print
         (r'\bspitout\b', 'print'),
     ]
 
     python_lines = []
 
-    # Loop line by line so replacement & colon checks work properly
+    # colon checks
     for line in code.splitlines():
         translated = line
 
-        # Apply all keyword replacements
         for pattern, replacement in replacements:
             translated = re.sub(pattern, replacement, translated)
 
-        # Auto-add colons to Python block headers if missing
+        # add colons
         stripped = translated.strip()
         if any(stripped.startswith(k) for k in ["if ", "elif ", "else", "def ", "for ", "while "]):
             if not stripped.endswith(":"):
@@ -53,7 +52,7 @@ def run_file(filename: str):
 
     py_code = transpile(source_code)
     
-    # Run the transpiled python code directly
+    # running the code
     exec(py_code)
 
 
